@@ -1,14 +1,5 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
-
-
 import torch
 import random
-
-
-# In[2]:
 
 
 class Buffer():
@@ -34,9 +25,6 @@ class Buffer():
                 else:
                     return_img.append(img)
         return torch.cat(return_img,dim=0)
-
-
-# In[ ]:
 
 
 class LambdaLR():

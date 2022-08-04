@@ -57,7 +57,7 @@ class UNetSkipConnectionLayer(nn.Module):
         elif outter:
             upConv=nn.ConvTranspose2d(inner_c*2,out_c,kernel_size=4,stride=2,padding=1)
             down=[downConv]
-            up=[uprelu,upConv,nn.Tanh()]
+            up=[uprelu,upConv]
             layers=down+[submodule]+up
         else:
             upConv=nn.ConvTranspose2d(inner_c*2,out_c,kernel_size=4,stride=2,padding=1,bias=use_bias)
@@ -72,7 +72,7 @@ class UNetSkipConnectionLayer(nn.Module):
     
     def forward(self,x):
         if self.outter:
-            return self.model(x)
+            return (self.model(x)+x)
         else:
             return torch.cat([x,self.model(x)],dim=1)
 
