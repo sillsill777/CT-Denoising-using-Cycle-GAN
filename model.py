@@ -41,7 +41,10 @@ class UNetSkipConnectionLayer(nn.Module):
             use_bias=(norm_layer.func==nn.InstanceNorm2d)
         else:
             use_bias=(norm_layer==nn.InstanceNorm2d)
-        
+
+        if self.outter:
+            self.outconv=nn.Conv2d(2,out_c,kernel_size=1,stride=1)
+
         downrelu=nn.LeakyReLU(0.2,True)
         downConv=nn.Conv2d(in_c,inner_c,kernel_size=4,stride=2,padding=1,bias=use_bias)
         uprelu=nn.ReLU(True)
@@ -72,7 +75,7 @@ class UNetSkipConnectionLayer(nn.Module):
     
     def forward(self,x):
         if self.outter:
-            return (self.model(x)+x)
+            return self.outconv(torch.cat([x,self.model(x)],dim=1))
         else:
             return torch.cat([x,self.model(x)],dim=1)
 
