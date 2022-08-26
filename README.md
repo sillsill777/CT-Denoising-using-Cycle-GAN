@@ -141,7 +141,7 @@ To use pretrained model, download [models.zip](https://drive.google.com/drive/fo
  - Discriminator Loss Function
  <img src="./images_README/discriminator_loss.png">
  
- ### Train Parameter
+ ### Hyperparameter
  
  We tested for various U-net depth(7 layer, 8 layer, 9 layer) where layer represents one concatenation, so our final model presented above is 8 layer U-net Generator.
  
