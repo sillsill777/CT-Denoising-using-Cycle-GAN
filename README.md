@@ -3,7 +3,7 @@
 
 You can find details about Low Dose CT Grand Challenge from this [Official Website.](https://www.aapm.org/grandchallenge/lowdosect/#trainingData)
 
-You can download data set(~8.3GB) from [data link](https://drive.google.com/drive/folders/1pC7Coiu3bcPAy2Kno7b6jdyLzcs-G1Gz?usp=sharing).
+You can download data set(~8.3GB) from [data link.](https://drive.google.com/drive/folders/1pC7Coiu3bcPAy2Kno7b6jdyLzcs-G1Gz?usp=sharing)
 
 Download the ```data.zip``` and place ```data``` folder in main project directory.
 
@@ -74,7 +74,7 @@ For the other loss values during training, you can find graph image inside ```im
 
 - - -
 
-### PSNR & SSIM
+## PSNR & SSIM
 
 - PSNR
   - Average **PSNR** between Test set Quarter Dose and Test set Full Dose: 26.9565dB
@@ -85,5 +85,44 @@ For the other loss values during training, you can find graph image inside ```im
   - Average **SSIM** between Test set Full Dose and U-net Generator generated image: 0.8598
   - **SSIM** gain: ```0.1610```
   
- ### Results
+ ## Results
+ (PSNR, SSIM with respect to Full Dose)
  
+ - Full Image (512X512 size)
+ 
+ <img src="./images_README/0216.png">
+ 
+ - Center Cropped Image (150X150 size)
+ 
+<img src="./images_README/0041.png">
+<img src="./images_README/0059.png">
+<img src="./images_README/0352.png">
+
+- Noise Comparison
+
+<img src="./images_README/0052.png">
+
+Left image is the noise(difference between full dose and quarter dose) and the right image is the noise(difference between generated signal and quarter dose) eliminated by Cycle GAN. You can see that Cycle GAN properly eliminates noise from quarter dose signal.
+
+- - -
+
+## Code Structure & Explanation
+
+### 0. Data Download
+- Download [data.zip](https://drive.google.com/drive/folders/1pC7Coiu3bcPAy2Kno7b6jdyLzcs-G1Gz?usp=sharing) and place ```data``` folder, containing ```test``` and ```train``` subfolder, inside the main project directory.
+### 1. Data Preprocessing
+- No data preprocessing is used. We will use raw signal data from ```data``` as input to model.
+- The only processing used is ```torchvision.transforms.RandomCrop``` to downsize image from 512X512 to 256X256.
+### 2. Training
+- Run ```train.ipynb```. Model will be saved under ```final_result``` folder.
+- Run ```tensorboard --logdir ./runs``` to monitor training.
+### 3. Inference
+- Run ```inference.ipynb```. You can get PSNR and SSIM value for your trained model.
+- Inside ```inference.ipynb``` you can find ```plot_result``` function. It will generate image like the one in Result section. ```crop``` parameter will center crop the image to given size. ```save``` parameter will save image under the folder ```final_image``` or ```final_image_center``` if you use ```crop``` parameter.
+- ```plot_reult_diff``` generate image like the one in Noise Comparison. Parameters are same as ```plot_result``` function. It will save image under the folder ```final_image_diff``` or ```final_image_diff_center``` if you use ```crop``` parameter.
+
+To use pretrained model, download [models.zip](https://drive.google.com/drive/folders/1pC7Coiu3bcPAy2Kno7b6jdyLzcs-G1Gz?usp=sharing) and place the unzipped folders (Discriminator_A, GAN_FD_to_QD...) under ```final_result``` folder. If you don't have ```final_result``` folder, you have to make it in the main project directory. And go to ```Step 3```
+
+- - -
+
+## Additional
