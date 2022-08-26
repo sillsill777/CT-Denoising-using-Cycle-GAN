@@ -58,7 +58,7 @@ For the discriminator, we used 70X70 ***PatchGAN***. Which was introduced in ori
 
 For those of you wandering what PathGAN is, I recommend this [website](https://sahiltinky94.medium.com/understanding-patchgan-9f3c8380c207) to understand what it is.
 
-We just used PatchGAN presented in [this code.](https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix/blob/9bcef69d5b39385d18afad3d5a839a02ae0b43e7/models/networks.py#L538) And below is the detial structure of 70X70 PatchGAN.
+We just used PatchGAN presented in [this code.](https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix/blob/9bcef69d5b39385d18afad3d5a839a02ae0b43e7/models/networks.py#L538) And below is the detail structure of 70X70 PatchGAN.
 
 <img src="./images_README/Cycle GAN Discriminator.png">
 
@@ -131,6 +131,24 @@ To use pretrained model, download [models.zip](https://drive.google.com/drive/fo
 
  We present Loss function used for generator and discriminator. Although loss function equation is well explained in the original paper, there is no one complete equation in the paper. So we organized the loss functions in one equation.
  
+ We follow the notation given in the original paper. Check the image below. (Reference: [Original paper figure 3](https://arxiv.org/abs/1703.10593?amp=1))
+ 
+ <img src="./images_README/explain.png">
+ 
  - Generator Loss Function
  <img src="./images_README/generator_loss.png">
  
+ - Discriminator Loss Function
+ <img src="./images_README/discriminator_loss.png">
+ 
+ ### Train Parameter
+ 
+ We tested for various U-net depth(7 layer, 8 layer, 9 layer) where layer represents one concatenation, so our final model presented above is 8 layer U-net Generator.
+ 
+ | # of layers | PSNR Gain(dB) | Center Cropped image(350X350) PSNR Gain(dB) | SSIM Gain | Center Cropped image(350X350) SSIM Gain | Noise PSNR|
+ | --- | --- | --- | --- | --- | --- |
+ | 7 layer | 6.6638 | 4.8668 | 0.1484 | 0.1187 | 19.8380 |
+ | 8 layer | **7.4842** | **5.2259** | **0.1610** | **0.1236** | **19.9271** |
+ | 9 layer | 7.3119 | 4.6682 | 0.1555 | 0.1048 | 19.6466 |
+ 
+ For 7 layer, 8 layer U-net generator, we used RandomCrop with 256X256 size and trained with total 80 epochs. For 9 layer U-net generator 256X256 input is unavailable so we used full size image(512X512 size) and trained for 30 epochs. As you can see our best model was achevied using 8 layer U-net.
