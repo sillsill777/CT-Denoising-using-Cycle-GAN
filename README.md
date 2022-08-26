@@ -126,3 +126,11 @@ To use pretrained model, download [models.zip](https://drive.google.com/drive/fo
 - - -
 
 ## Additional
+
+### Loss Function
+
+ We present Loss function used for generator and discriminator. Although loss function equation is well explained in the original paper, there is no one complete equation in the paper. So we organized the loss functions in one equation.
+ 
+ - Generator Loss Function
+ <img src="./images_README/generator_loss.png">
+ 
